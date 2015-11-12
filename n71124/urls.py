@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from hangar.views import TemperatureReportingView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^temperature/', TemperatureReportingView.as_view())
 ]
