@@ -1,45 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
+    <head>
+        <title>&#9992; N71124 - 1969 Cessna 182</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.23.0/css/uikit.min.css" />
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.23.0/js/uikit.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css" />
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-    <title>N71124</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
-
-<style type="text/css">
+        <style type="text/css">
 body {
-  padding-top: 50px;
+    background-image: url(/static/bg.jpg);
+    height: 100%;
+    background-position: 50% 50%; 
+    background-repeat: no-repeat;
+    background-size: cover;
 }
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
+html {
+    height: 100%;
 }
-    </style>
+.uk-navbar {
+       border-bottom: 2px solid #4A824A;
+}
+.uk-panel {
+    margin: 0 1.2rem 0 1.2rem;
+    box-shadow: 4px 4px 14px -2px rgba(0,0,0,0.75);
+}
+.uk-panel-box {
+    border: 1px solid #4A824A;
+    box-shadow: 4px 4px 14px -2px rgba(0,0,0,0.75);
+}
+.tester{
+    padding: 0;
+    min-height: 150px;
+}
+.tester span {
+    padding: 10px 0 0 10px;
+}
+.box-text {
+    position:absolute;
+    z-index:99;
+    font-size:2rem;
+    padding:8px;
+    font-weight: bold;
+}
+div.no-margin {
+    padding: 0;
+    max-height: 200px;
+}
+.floater {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 25px;
+    z-index: 99;
 
-</head>
-<body>
+}
+.floater p {
+    font-weight: bold;
+}
+        </style>
+        <script type="text/javascript">
+    $(document).ready(function() {
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-md-4">
-            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;N71124
+    TESTER = document.getElementById('chart');
+
+    var ambient = [
+        {
+            x: {{ ambient_dates|safe }},
+            y: {{ ambient_data|safe }},
+            mode: 'lines+markers',
+            type: 'scatter',
+            name: "Ambient",
+            marker: {
+                size: 8,
+                color: 'blue'
+            },
+            opacity: 0.4
+        }
+    ];
+
+    var cowling = [
+        {
+            x: {{ cowling_dates|safe }},
+            y: {{ cowling_data|safe }},
+            mode: 'lines+markers',
+            type: 'scatter',
+            name: "Cowl",
+            marker: {
+                size: 8,
+                color: 'red'
+            },
+            opacity: 0.4
+        }
+    ];
+
+    var layout = {
+        showlegend: false,
+        xaxis: {
+            autorange: true,
+            showgrid: false,
+            zeroline: false,
+            showline: false,
+            autotick: true,
+            ticks: '',
+            showticklabels: false
+        },
+        yaxis: {
+            autorange: true,
+            showgrid: false,
+            zeroline: false,
+            showline: false,
+            autotick: true,
+            ticks: '',
+            showticklabels: false
+        },
+        margin: {
+            l: 0,
+            r: 0,
+            t: 0,
+            b: 0
+        },
+        height: 200,
+    };
+
+    Plotly.newPlot('chart', ambient, layout);
+    Plotly.addTraces('chart', cowling)
+
+});
+    </script>
+    </head>
+    <body>
+        <nav class="uk-navbar uk-margin-bottom">
+            <ul class="uk-navbar-nav">
+                <a href="/" class="uk-navbar-brand uk-text-large uk-text-bold">&#9992; N71124</a>
+            </ul>
+            <div class="uk-navbar-flip">
+                <ul class="uk-navbar-nav">
+                    <li><a href="">login</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+          <div class="uk-grid">
+            <div class="uk-width-medium-1-1">
+                <div class="uk-panel uk-panel-box uk-panel-space uk-text-center no-margin">
+                    
+                    <div class="floater">
+                        <button class="uk-button uk-button-large uk-button-success uk-align-center" type="button">Heater ON</button>
+                        <button class="uk-button uk-button-large uk-button-danger uk-align-center" type="button">Heater OFF</button>
+                        <p>Since 3:32pm - 12m</p>
+                        <p>{{ heater_watts }} W {{ heater_amps }} A</p>
+                    </div>
+                    <div id="chart"></div>
+                </div>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-6 col-md-2">Ambient: {{ ambient }} &deg;F</div>
-        <div class="col-xs-6 col-md-2">Cowling: {{ cowling }} &deg;F</div>
-        <div class="col-xs-6 col-md-2">PreHeat: OFF</div>
-        <div class="col-xs-6 col-md-2">Manually turn on</div>
-        <div class="col-xs-6 col-md-2">PreHeater turns on at Thurs 1/2 at 3pm CST</div>
-        <div class="col-xs-6 col-md-2">Login</div>
-    </div>
-</div>
-
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-</body>
+    </body>
 </html>
