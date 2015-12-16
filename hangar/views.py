@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
-from hangar.forms import SensorForm
-from hangar.models import Sensor, SensorData
+from hangar.forms import SensorForm, SwitchStatusForm
+from hangar.models import Sensor, SensorData, PowerSwitch
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -41,6 +41,29 @@ class SensorReportingView(View):
     def get(self,request):
         return HttpResponse("Use POST")
 
+
+class SwitchStatusView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(SwitchStatusView, self).dispatch(request, *args, **kwargs)
+
+    def post(self,request):
+        form = SwitchStatusForm(request.POST)
+        if form.is_valid():
+            try:
+                sensor = PowerSwitch.objects.get(serial=form.cleaned_data['serial'])
+            except PowerSwitch.DoesNotExist:
+                return HttpResponse("Switch Not Found")
+
+            if sensor.status:
+                return HttpResponse("ON")
+            else:
+                return HttpResponse("OFF")
+        else:
+            return HttpResponse("Data is not valid - %s" % form.errors)
+
+    def get(self,request):
+        return HttpResponse("Use POST")
 
 
 class FrontPageView(View):
@@ -88,6 +111,12 @@ class FrontPageView(View):
                 ambient_dates.append(data.date.strftime("%Y-%m-%d %H:%M:%S"))
                 ambient_data.append(float(data.value))
 
+        heater_status = PowerSwitch.objects.filter(serial="heater").first()
+        if heater_status and heater_status.status:
+            status = True
+        else:
+            status = False
+
 
         return render(request, self.template_name, { 
             "cowling": cowling_temp, 
@@ -96,7 +125,7 @@ class FrontPageView(View):
             "cowling_data": json.dumps(cowling_data),
             "ambient_dates": json.dumps(ambient_dates),
             "ambient_data": json.dumps(ambient_data),
-
             "heater_watts": heater_watts.last_value,
             "heater_amps": heater_amps.last_value,
+            "heater_status": status,
         })

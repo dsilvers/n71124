@@ -149,10 +149,12 @@ div.no-margin {
                 <div class="uk-panel uk-panel-box uk-panel-space uk-text-center no-margin">
                     
                     <div class="floater">
+                        {% if status %}
                         <button class="uk-button uk-button-large uk-button-success uk-align-center" type="button">Heater ON</button>
+                        {% else %}
                         <button class="uk-button uk-button-large uk-button-danger uk-align-center" type="button">Heater OFF</button>
-                        <p>Since 3:32pm - 12m</p>
-                        <p>{{ heater_watts }} W {{ heater_amps }} A</p>
+                        {% endif %}
+                        <p>{{ heater_watts }} W,  {{ heater_amps }} A</p>
                     </div>
                     <div id="chart"></div>
                 </div>

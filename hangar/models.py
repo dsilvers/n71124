@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 
 
 class Hangar(models.Model):
@@ -61,6 +61,7 @@ class PowerSwitch(models.Model):
     def __unicode__(self):
         return "%s - %s" % (self.hangar, self.serial)
 
+    @property
     def status(self):
         manual_control = PowerManualControl.objects.order_by("-date").first()
         scheduled_control = PowerSchedule.objects.filter(start__gte=datetime.now(), end__lt=datetime.now()).first()

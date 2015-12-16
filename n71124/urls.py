@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from hangar.views import SensorReportingView, FrontPageView
+from hangar.views import SensorReportingView, FrontPageView, SwitchStatusView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^sensors/', SensorReportingView.as_view()),
+    url(r'^switches/', SwitchStatusView.as_view()),
     url(r'^$', FrontPageView.as_view()),
 ]
