@@ -1,0 +1,726 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>How to build an arduino energy monitor | OpenEnergyMonitor</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<link rel="shortcut icon" href="/emon/sites/default/files/emon3_favicon.png" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" media="all" href="/emon/modules/aggregator/aggregator.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/node/node.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/system/defaults.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/system/system.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/system/system-menus.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/user/user.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/ckeditor/ckeditor.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/mollom/mollom.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/nice_menus/nice_menus.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/nice_menus/nice_menus_default.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/forum/forum.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/views/css/views.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/tweetbutton/tweetbutton.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/comment/comment.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/themes/emon3/style.css?H" />
+<style type="text/css" media="all">@import "/emon/sites/all/themes/emon3/user_bar.css";</style>
+  <script type="text/javascript" src="/emon/misc/jquery.js?H"></script>
+<script type="text/javascript" src="/emon/misc/drupal.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/superfish/js/superfish.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/superfish/js/jquery.bgiframe.min.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/superfish/js/jquery.hoverIntent.minified.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/nice_menus.js?H"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/emon/", "nice_menus_options": { "delay": "800", "speed": "fast" } });
+//--><!]]>
+</script>
+  <script type="text/javascript"> </script>
+</head>
+
+<body>
+
+<div id="box">
+
+<table border="0" cellpadding="0" cellspacing="0" id="header">
+  <tr>
+    <td id="logo">
+       <h1 class='site-name'><a href="/emon/" title="Home">OpenEnergyMonitor</a></h1>    </td>
+    <td id="menu">
+      
+      <ul class="links" id="navlist"><li class="menu-254 first"><a href="http://openenergymonitor.org/emon/sustainable-energy" title="The OpenEnergyMonitor Vision">About</a></li>
+<li class="menu-198"><a href="/emon/opensustech" title="Building upon the work and ideas of many people">Open source</a></li>
+<li class="menu-146"><a href="/emon/people" title="People">People</a></li>
+<li class="menu-199"><a href="http://openenergymonitor.blogspot.com/" title="">Blog</a></li>
+<li class="menu-1051"><a href="http://openenergymonitor.org/emon/forum" title="">Forums </a></li>
+<li class="menu-833 last"><a href="http://github.com/openenergymonitor" title="Software repositories for OpenEnergyMonitor project">GitHub</a></li>
+</ul>      <form action="/emon/node/58"  accept-charset="UTF-8" method="post" id="search-theme-form">
+<div><div id="search" class="container-inline">
+  <div class="form-item" id="edit-search-theme-form-1-wrapper">
+ <label for="edit-search-theme-form-1">Search this site: </label>
+ <input type="text" maxlength="128" name="search_theme_form" id="edit-search-theme-form-1" size="15" value="" title="Enter the terms you wish to search for." class="form-text" />
+</div>
+<input type="submit" name="op" id="edit-submit-1" value="Search"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-IPyXVMi35lA4U7qRniwtODLzd2zPXOTXsga1emJjLsA" value="form-IPyXVMi35lA4U7qRniwtODLzd2zPXOTXsga1emJjLsA"  />
+<input type="hidden" name="form_id" id="edit-search-theme-form" value="search_theme_form"  />
+</div>
+
+</div></form>
+      
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><div></div></td>
+</tr>
+</table>
+<!--<div style="background-color:#444444; border-top: 1px solid #888; height:32px;">-->
+  <div class="block block-nice_menus" id="block-nice_menus-1">
+    <h2 class="title"></h2>
+    <div class="content"><ul class="nice-menu nice-menu-down" id="nice-menu-1"><li class="menu-1041 menuparent menu-path-openenergymonitororg-emon-guide first  odd "><a href="http://openenergymonitor.org/emon/guide" title="">Get Started</a><ul><li class="menu-1795 menu-path-node-11570 first  odd "><a href="/emon/Overview" title="">System Overview</a></li>
+<li class="menu-1647 menu-path-node-4898 even "><a href="/emon/guide" title="OpenEnergyMonitor Guide">Setup Guide</a></li>
+<li class="menu-1764 menu-path-openenergymonitororg-emon-modules-emonpi odd "><a href="http://openenergymonitor.org/emon/modules/emonpi" title="Setup web-connected Raspberry Pi based energy monitor base-station using ready-to-go SD card ">Base Station Setup</a></li>
+<li class="menu-1796 menu-path-node-11206 even  last "><a href="/emon/faq" title="Frequently asked questions">FAQ</a></li>
+</ul>
+</li>
+<li class="menu-1042 menuparent menu-path-openenergymonitororg-emon-hardware even "><a href="http://openenergymonitor.org/emon/hardware" title="Hardware Modules">Hardware</a><ul><li class="menu-1762 menu-path-node-10548 first  odd "><a href="/emon/modules/emonpi" title="emonPi">emonPi / emonBase</a></li>
+<li class="menu-1047 menu-path-openenergymonitororg-emon-modules-emonTxV3 even "><a href="http://openenergymonitor.org/emon/modules/emonTxV3" title="Remote energy monitoring node">emonTx</a></li>
+<li class="menu-1601 menu-path-node-3223 odd "><a href="/emon/modules/emonTH" title="emonTH">emonTH</a></li>
+<li class="menu-1387 menu-path-openenergymonitororg-emon-emontxshield even "><a href="http://openenergymonitor.org/emon/emontxshield" title="Arduino compatible energy monitoring shield ">emonTx Shield </a></li>
+<li class="menu-1048 menu-path-openenergymonitororg-emon-emonglcd odd "><a href="http://openenergymonitor.org/emon/emonglcd" title="">emonGLCD</a></li>
+<li class="menu-1792 menu-path-wikiopenenergymonitororg- even  last "><a href="http://wiki.openenergymonitor.org/" title="Hardware documentation wiki ">Hardware Wiki</a></li>
+</ul>
+</li>
+<li class="menu-1590 menuparent menu-path-Http--emoncmsorg odd "><a href="Http://emoncms.org" title="open-source web-app for processing, logging and visualising energy, temperature and other environmental data">Emoncms</a><ul><li class="menu-1788 menu-path-node-11553 first  odd  last "><a href="/emon/node/11553" title="Installation Guides">Installation Guides</a></li>
+</ul>
+</li>
+<li class="menu-1043 menuparent menu-path-openenergymonitororg-emon-buildingblocks even "><a href="http://openenergymonitor.org/emon/buildingblocks" title="Technical resources">Resources</a><ul><li class="menu-1801 menu-path-openenergymonitororg-emon-buildingblocks first  odd "><a href="http://openenergymonitor.org/emon/buildingblocks" title="">Building Blocks</a></li>
+<li class="menu-1052 menu-path-openenergymonitororg-emon-forum even "><a href="http://openenergymonitor.org/emon/forum" title="">Forums </a></li>
+<li class="menu-1797 menu-path-https--githubcom-openenergymonitor- odd "><a href="https://github.com/openenergymonitor/" title="open-source software repositories &amp; hardware designs ">Software GitHub</a></li>
+<li class="menu-1798 menu-path-https--githubcom-openenergymonitor-hardware- even "><a href="https://github.com/openenergymonitor/hardware/" title="open-hardware design files">Hardware GitHub</a></li>
+<li class="menu-1393 menu-path-wikiopenenergymonitororg- odd "><a href="http://wiki.openenergymonitor.org/" title="Hardware technical documentation Wiki ">Hardware Wiki</a></li>
+<li class="menu-1767 menu-path-openenergymonitororg-emon-faq even  last "><a href="http://openenergymonitor.org/emon/faq" title="Answers to commonly asked questions">FAQ</a></li>
+</ul>
+</li>
+<li class="menu-1044 menu-path-openenergymonitororg-emon-labs odd "><a href="http://openenergymonitor.org/emon/labs" title="Development &amp; experimental ">Labs</a></li>
+<li class="menu-1793 menu-path-shopopenenergymonitorcom- even  last "><a href="http://shop.openenergymonitor.com/" title="OpenEnergyMonitor official online store">Online Store</a></li>
+</ul>
+</div>
+ </div>
+
+<table border="0" cellpadding="0" cellspacing="0" id="content">
+  <tr>
+        <td valign="top">
+            <div id="main">
+        <div class="breadcrumb"><a href="/emon/">Home</a></div>     
+        <div class="tabs"></div>
+                          <div class="node">
+
+    
+          <span class="submitted"></span>
+      <div class="taxonomy"></div>
+      <div class="content"><div class="tweetbutton"><a href="http://twitter.com/share" class="twitter-share-button"  data-count="horizontal" data-via="Openenergymon" data-related=":" data-text="" data-url="http://openenergymonitor.org/emon/buildingblocks/how-to-build-an-arduino-energy-monitor" data-lang="en">Tweet</a></div><h2>How to build an Arduino energy monitor - measuring mains voltage and current</h2>
+<p>Including voltage measurement via AC-AC voltage adapter and current measurement via a CT sensor.</p>
+<p>&nbsp;</p>
+<p><img alt="" height="844" src="http://openenergymonitor.org/emon/sites/default/files/currentvoltage_bb.jpg" width="600" /></p>
+<p>&nbsp;</p>
+<p>This guide details how to build a simple electricity energy monitor on that can be used to measure how much electrical energy you use in your home. It measures voltage with an AC to AC power adapter and current with a clip on CT sensor, making the setup quite safe as no high voltage work is needed.</p>
+<p>The energy monitor can calculate real power, apparent power, power factor, rms voltage, rms current. All the calculations are done in the digital domain on an Arduino.</p>
+<h3>Step One &ndash; Gather Components</h3>
+<p><strong>You will need:</strong></p>
+<p class="rteindent1">1x Arduino</p>
+<p><strong>Voltage sensing electronics:</strong></p>
+<p class="rteindent1">1x 9V AC-AC Power Adapter</p>
+<p class="rteindent1">1x 100kOhm resistor for step down voltage divider.</p>
+<p class="rteindent1">1x 10kOhm resistor for step down voltage divider.</p>
+<p class="rteindent1">2x 470kOhm (for voltage divider, any matching value resistor pair down to 10K)</p>
+<p class="rteindent1">1x 10uF capacitor</p>
+<p><strong>Current sensing electronics</strong></p>
+<p class="rteindent1">1x CT sensor SCT-013-000</p>
+<p class="rteindent1">1x Burden resistor 18 Ohms if supply voltage is 3.3V or 33 Ohms if supply voltage is 5V.</p>
+<p class="rteindent1">2x 470kOhm (for voltage divider, any matching value resistor pair down to 10K)</p>
+<p class="rteindent1">1x 10uF capacitor</p>
+<p><strong>Other</strong></p>
+<p class="rteindent1">1x A breadboard and some single core wire.</p>
+<p class="rteindent1">Oomlout do a good arduino + breadboard bundle <a href="http://www.oomlout.co.uk/arduino-prototyping-bundle-br-ardp-p-186.html?zenid=1f2d8abc7fe1ce7953446890ca648cbd">here &pound;29</a></p>
+<h3>Step Two &ndash; Assemble the electronics</h3>
+<p>The electronics consist of the sensors (which produce signals proportional to the mains voltage and current) and the sensor electronics that convert these signals into a form the Arduino is happy with.</p>
+<p>For a circuit diagram and detailed discussion of sensors and electronics see:</p>
+<p><a href="http://openenergymonitor.org/emon/buildingblocks/ct-sensors-introduction">CT Senors - Introduction</a></p>
+<p><a href="http://openenergymonitor.org/emon/buildingblocks/ct-sensors-interface">CT Sensors - Interfacing with an&nbsp;Arduino</a></p>
+<p><a href="http://openenergymonitor.org/emon/buildingblocks/measuring-voltage-with-an-acac-power-adapter">Measuring AC Voltage with an AC to AC power adapter</a></p>
+<p><strong>Assemble the components as in the diagram above.</strong></p>
+<h3>Step Three &ndash; Upload the Arduino Sketch</h3>
+<p>The Arduino sketch is the piece of software that runs on the Arduino. The Arduino converts the raw data from its analog input into a nice useful values and then outputs them to serial.</p>
+<p><strong>a)&nbsp;Download&nbsp;EmonLib&nbsp;from&nbsp;github&nbsp;and place in your&nbsp;arduino&nbsp;libraries folder.</strong></p>
+<p>Download:&nbsp;<a href="https://github.com/openenergymonitor/EmonLib">EmonLib</a></p>
+<p><strong>b) Upload the voltage and current example:</strong></p>
+<pre>
+#include&nbsp;<span style="color: #006699;">&quot;EmonLib.h&quot;</span>             <span style="color: #7E7E7E;">// Include Emon Library</span>
+EnergyMonitor&nbsp;emon1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #7E7E7E;">// Create an instance</span>
+
+<span style="color: #CC6600;">void</span> <span style="color: #CC6600;"><b>setup</b></span>()
+{&nbsp;&nbsp;
+&nbsp;&nbsp;<span style="color: #CC6600;"><b>Serial</b></span>.<span style="color: #CC6600;">begin</span>(9600);
+&nbsp;&nbsp;
+&nbsp;&nbsp;emon1.voltage(2,&nbsp;234.26,&nbsp;1.7);&nbsp;&nbsp;<span style="color: #7E7E7E;">// Voltage: input pin, calibration, phase_shift</span>
+&nbsp;&nbsp;emon1.current(1,&nbsp;111.1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #7E7E7E;">// Current: input pin, calibration.</span>
+}
+
+<span style="color: #CC6600;">void</span> <span style="color: #CC6600;"><b>loop</b></span>()
+{
+&nbsp;&nbsp;emon1.calcVI(20,2000);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #7E7E7E;">// Calculate all. No.of wavelengths, time-out</span>
+&nbsp;&nbsp;emon1.serialprint();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #7E7E7E;">// Print out all variables</span>
+}
+</pre><p><strong>c) Open the arduino serial window</strong></p>
+<p>You should now see a stream of values. These are from left to right: real power, apparent power, rms voltage,&nbsp;rms current and power factor.</p>
+</div>
+    
+    
+      </div>
+<div id="comments">
+  <a id="comment-1573"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Dawn&#039;s picture" title="Dawn&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by Dawn (not verified) on Tue, 01/03/2011 - 20:07.</div>
+    <div class="content">
+     <p>If it helps anyone, I ordered my cts for SEEEDSTUDIO and I calculated my CT sensors to be 1200.  I don't know if all of them are 1200 but if you are ordering yours from seeedstudio you might want to use 1200 instead of 1500.  </p>
+<p>If someone else has ordered cts from SEEEDSTUDIO and found that their cts sensors are different than 1200 please hit reply.  I am just curious if 1200 turns is standard for them or if it varies.</p>
+<p>Thanks.</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-1565"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="nedir&#039;s picture" title="nedir&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by <a href="http://www.nedirsor.com" rel="nofollow">nedir</a> (not verified) on Wed, 23/02/2011 - 21:16.</div>
+    <div class="content">
+     <p>i agree Step one – calibrating power factor..</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-1536"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Guest&#039;s picture" title="Guest&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by Guest (not verified) on Tue, 15/02/2011 - 09:55.</div>
+    <div class="content">
+     <p>I have downloaded the library and the sketch but i get a compile error.</p>
+<p>maybe because i dont have the file ??<br />
+#include "WProgram.h"</p>
+<p>I guess thats where all the calculations are done, cause i dont see them anymore on those two files.</p>
+<p>Am I missing a file?</p>
+<p>thanks</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-1539"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <a href="/emon/user/3" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-3.jpg" alt="TrystanLea&#039;s picture" title="TrystanLea&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by <a href="/emon/user/3" title="View user profile.">TrystanLea</a> on Tue, 15/02/2011 - 10:10.</div>
+    <div class="content">
+     <p>Have you placed the library in the arduino libraries folder? The calculations are done in this library, declared on this line:</p>
+<p>#include &quot;Emon.h&quot; &nbsp; &nbsp;//Load the library</p>
+<div>&nbsp;</div>
+<div>I think Wprogram is a core arduino library.</div>
+</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-1540"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Guest&#039;s picture" title="Guest&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by Guest (not verified) on Tue, 15/02/2011 - 10:14.</div>
+    <div class="content">
+     <p>Ok on the wprogram.</p>
+<p>but on the emon.h, where are the calculations? i only see variables defined.</p>
+<p>old pde used to have all the calculations within 3000 number of samples, sumV, sumP etc</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-1566"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="solar&#039;s picture" title="solar&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by solar (not verified) on Thu, 24/02/2011 - 13:55.</div>
+    <div class="content">
+     <p>An array of photovoltaic cells can capture the sun’s rays and transform it into green electricity. Queensland’s climate is particularly suitable for solar energy generation, and can be used for household energy consumption.<br />
+If you are living in Queensland, there has never been a better time to convert your home’s conventional power supply into one that is run by solar power systems Citisolar <a href="http://www.solarpowerqueensland.net.au/">Solar Power Queensland</a> aims to help you gain the best rebate for quality products. You will need to do your research as not all solar panels are created equal and every company will give you a different rebate.</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-1543"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <a href="/emon/user/3" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-3.jpg" alt="TrystanLea&#039;s picture" title="TrystanLea&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by <a href="/emon/user/3" title="View user profile.">TrystanLea</a> on Tue, 15/02/2011 - 10:33.</div>
+    <div class="content">
+     <p>The calculations are in emon.cpp, emon.h is the header file that declares variables and functions in emon.cpp.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-1541"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Guest&#039;s picture" title="Guest&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by Guest (not verified) on Tue, 15/02/2011 - 10:21.</div>
+    <div class="content">
+     <p>I have put mainsACexample.pde and Emon.h in the same folder.<br />
+tried to compile...not working.</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-1544"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <a href="/emon/user/3" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-3.jpg" alt="TrystanLea&#039;s picture" title="TrystanLea&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by <a href="/emon/user/3" title="View user profile.">TrystanLea</a> on Tue, 15/02/2011 - 10:35.</div>
+    <div class="content">
+     <p>Emon.h and Emon.cpp need to be placed in the arduino ide libraries folder, for example:&nbsp;arduino/libraries/Emon</p>
+<p>Make sure you restart the arduino ide too as it needs to do this to recognise the library</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+</div></div></div></div><a id="comment-1530"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="binoylewis&#039;s picture" title="binoylewis&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: How to build an arduino energy monitor</h3>
+
+    <div class="submitted">Submitted by binoylewis (not verified) on Fri, 11/02/2011 - 09:58.</div>
+    <div class="content">
+     <p>&nbsp;In your arduino sketch LoggerSketch.pde available in the EnergyMonitor.tar.gz download you use a function call emonA.measure() which is resulting in an error can this be substituted by emonA.calculate() instaed?</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="item-list"><ul class="pager"><li class="pager-current first">1</li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=1" title="Go to page 2" class="active">2</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=2" title="Go to page 3" class="active">3</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=3" title="Go to page 4" class="active">4</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=4" title="Go to page 5" class="active">5</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=5" title="Go to page 6" class="active">6</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=6" title="Go to page 7" class="active">7</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=7" title="Go to page 8" class="active">8</a></li>
+<li class="pager-next"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=1" title="Go to next page" class="active">next ›</a></li>
+<li class="pager-last last"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=7" title="Go to last page" class="active">last »</a></li>
+</ul></div></div>
+      
+              </div>
+    </td>
+    <td id="sidebar-right">
+        <div class="block block-menu" id="block-menu-secondary-links">
+    <h2 class="title">Site Map</h2>
+    <div class="content"><ul class="menu"><li class="leaf first"><a href="/emon/Overview" title="Overview">Overview</a></li>
+<li class="collapsed"><a href="/emon/Hardware" title="Hardware modules">Hardware</a></li>
+<li class="expanded active-trail"><a href="/emon/buildingblocks" title="Technical building blocks">Resources</a><ul class="menu"><li class="collapsed first"><a href="/emon/buildingblocks/setting-up-the-arduino-environment" title="Setting up the Arduino Environment">Setting up the Arduino Environment</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/avrisp" title="AVR ISP Programmers">AVR ISP Programmers</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/attiny" title="Setting up Arduino IDE for ATtinys">Setting up Arduino IDE for ATtinys</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ac-power-introduction" title="An introduction to AC Power">An introduction to AC Power</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ac-power-arduino-maths" title="AC Power Theory - Arduino maths">AC Power Theory - Arduino maths</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ac-power-advanced-maths" title="AC Power Theory - Advanced maths">AC Power Theory - Advanced maths</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/3-phase-power" title="3-Phase Power">3-Phase Power</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/overload-protection-of-mains-electrical-circuits" title="Overload Protection of Mains Electrical Circuits">Overload Protection of Mains Electrical Circuits</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/appliance-inference" title="Appliance Inference">Appliance Inference</a></li>
+<li class="expanded active-trail"><a href="/emon/buildingblocks/measuring-voltage-with-an-acac-power-adapter" title="Measuring AC Voltage with an AC to AC power adapter">Measuring AC Voltage with an AC to AC power adapter</a><ul class="menu"><li class="leaf first"><a href="/emon/buildingblocks/arduino-sketch-voltage-and-current" title="Arduino sketch - voltage and current">Arduino sketch - voltage and current</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/different-acac-power-adapters" title="Different AC to AC power adapters">AC to AC power adapters</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/acac-buffered-voltage-bias" title="AC-AC Buffered Voltage Bias">AC-AC Buffered Voltage Bias</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/acac-component-tolerances" title="AC-AC Component tolerances">AC-AC Component tolerances</a></li>
+<li class="expanded active-trail"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor" title="How to build an arduino energy monitor" class="active">How to build an arduino energy monitor</a><ul class="menu"><li class="leaf first last"><a href="/emon/node/60" title="Accuracy">Accuracy</a></li>
+</ul></li>
+<li class="leaf"><a href="/emon/buildingblocks/report-idealpower-9v-acac-adaptor" title="Ideal Power 9V AC-AC Adaptor">Report: Ideal Power 9V AC/AC Adaptor</a></li>
+<li class="leaf last"><a href="/emon/buildingblocks/report-mascot-9v-acac-adaptor" title="Report: Mascot 9 V AC/AC Adaptor">Report: Mascot 9 V AC/AC Adaptor</a></li>
+</ul></li>
+<li class="collapsed"><a href="/emon/buildingblocks/ct-sensors-introduction" title="CT sensors - Introduction">CT sensors - Introduction</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/digital-filters-for-offset-removal" title="Digital filters for offset removal">Digital filters for offset removal</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/dc-shunt" title="DC shunt">DC shunt</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/DS18B20-temperature-sensing" title="DS18B20 temperature sensing">DS18B20 temperature sensing</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/rtd-temperature-sensing" title="RTD temperature sensing">RTD temperature sensing</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/introduction-to-pulse-counting" title="Introduction to pulse counting">Introduction to pulse counting</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/12-input-pulse-counting" title="12 input pulse counting">12 input pulse counting</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ct-and-ac-power-adaptor-installation-and-calibration-theory" title="CT and AC power adaptor installation and calibration theory">CT and AC power adaptor installation and calibration theory</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/calibration" title="Calibration">Calibration Procedure</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/explanation-of-the-phase-correction-algorithm" title="Explanation of the phase correction algorithm">Explanation of the phase correction algorithm</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/emontx-error-sources" title="Sources of error in the emonTx voltage and current inputs.">Sources of error in the emonTx voltage and current inputs.</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/measurement-implications-of-adc-resolution-at-low-current-values" title="Measurement implications of ADC resolution at low current values">Measurement implications of ADC resolution at low current values</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/how-good-is-your-multimeter" title="How good is your multimeter?">How good is your multimeter?</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/meters" title="Energy Meters">Energy Meters</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/EmonTx-in-North-America" title="EmonTx - Use in North America">EmonTx - Use in North America</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/which-radio-module" title="RFM Radio Modules - Identifying different types">RFM Radio Modules - Identifying different types</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/rfm12b-wireless" title="HopeRF RFM12 wireless link">RFM12B - Part 1 - Hardware Overview</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/rfm12b2" title="RFM12B - Part 2 - Sending Data Between Modules">RFM12B - Part 2 - Sending Data Between Modules</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/master-slave-arduino-networking" title="Master-Slave Arduino networking">Master-Slave Arduino networking</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/wifi" title="Raspberry Pi WIFI">Raspberry Pi WIFI</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/simple-rf-link" title="Simple RF Link">Simple RF Link</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/xbee-link" title="How to add an Xbee Link">xbee-link</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/interfacing-with-sma-sunnyboy-pv-inverters-bluetooth" title="Interfacing with SMA SunnyBoy PV Inverters (Bluetooth)">Interfacing with SMA SunnyBoy PV Inverters (Bluetooth)</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/7-segment-display" title="7 segment display">7 segment display</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/mains-ac-relay-module" title="Mains AC Relay Module">Mains AC Relay Module</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/nokia-3310-lcd" title="Nokia 3310 LCD">Nokia 3310 LCD</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/sd-card-logging" title="SD Card Logging with Nuelectronics Real-time Datalog &amp; IO Shield">SD Card Logging with Nuelectronics Real-time Datalog &amp; IO Shield</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/sma-webbox-data-extractor" title="SMA webBox data extractor">SMA webBox data extractor</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/usb-data-logger" title="USB Data Logger">USB Data Logger</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/graphing-in-kst" title="Graphing in KST">Graphing in KST</a></li>
+<li class="collapsed last"><a href="/emon/buildingblocks/java-programs" title="Java Programs">Java Programs</a></li>
+</ul></li>
+<li class="collapsed"><a href="/emon/community%20" title="Community">Community</a></li>
+<li class="leaf"><a href="/emon/node/11355" title="Please read before posting">Read this before posting</a></li>
+<li class="collapsed"><a href="/emon/archive" title="Archive and Unsorted">Archive and Unsorted</a></li>
+<li class="leaf"><a href="/emon/faq" title="FAQ - Common issues">FAQs</a></li>
+<li class="leaf"><a href="/emon/node/11357" title="Adding a picture to your post">Adding a picture to a post</a></li>
+<li class="leaf last"><a href="/emon/node/11541" title="Emoncms Installation Guides">Emoncms Installation Guides</a></li>
+</ul></div>
+ </div>
+  <div class="block block-user" id="block-user-0">
+    <h2 class="title">User login</h2>
+    <div class="content"><form action="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?destination=node%2F58"  accept-charset="UTF-8" method="post" id="user-login-form">
+<div><div class="form-item" id="edit-name-wrapper">
+ <label for="edit-name">Username: <span class="form-required" title="This field is required.">*</span></label>
+ <input type="text" maxlength="60" name="name" id="edit-name" size="15" value="" class="form-text required" />
+</div>
+<div class="form-item" id="edit-pass-wrapper">
+ <label for="edit-pass">Password: <span class="form-required" title="This field is required.">*</span></label>
+ <input type="password" name="pass" id="edit-pass"  maxlength="60"  size="15"  class="form-text required" />
+</div>
+<input type="submit" name="op" id="edit-submit" value="Log in"  class="form-submit" />
+<div class="item-list"><ul><li class="first"><a href="/emon/user/register" title="Create a new user account.">Create new account</a></li>
+<li class="last"><a href="/emon/user/password" title="Request new password via e-mail.">Request new password</a></li>
+</ul></div><input type="hidden" name="form_build_id" id="form-Kbw_PhsmYg2F6crh8uygUCwQntmvfGTtjpG9jhpdOMw" value="form-Kbw_PhsmYg2F6crh8uygUCwQntmvfGTtjpG9jhpdOMw"  />
+<input type="hidden" name="form_id" id="edit-user-login-block" value="user_login_block"  />
+
+</div></form>
+</div>
+ </div>
+  <div class="block block-views" id="block-views-Forums-block_1">
+    <h2 class="title">Active forum topics</h2>
+    <div class="content"><div class="view view-Forums view-id-Forums view-display-id-block_1 view-dom-id-26238ed6d3c8cc20e1f1dcec7dd02aba">
+    
+  
+  
+      <div class="view-content">
+      <div class="item-list">    <ul>          <li class="views-row views-row-1 views-row-odd views-row-first">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11735">Confusion over the different hardware modules</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>3 min 32 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-2 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11734">Cannot get Wh Accumulator to work</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>11 min 37 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-3 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11733">problems with My Electric</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>18 min 36 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-4 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11732">emoncms.org rawdata graphs stopped.</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>48 min 9 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-5 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11720">EmonCMS 9.2 migration data corruption</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 hour 32 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-6 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11731">EmonPi aditional CT sensor</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 hour 32 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-7 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11727">emonTH with DHT22 doesn&#039;t transmit temperature and humidity values every 60 sec.</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>2 hours 2 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-8 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10919">Multi Stacked Barchart</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>3 hours 19 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-9 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11724">Dashboard with Gauge not displaying with Android</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>4 hours 11 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-10 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11729">MQ-2 smoke sensors</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>5 hours 23 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-11 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/5549">RFM12PI receiver goes hard down sometimes</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>5 hours 55 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-12 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10235">Getting places with gas meters, reed switches and ESP2866/NodeMCU/Lua</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 hours 5 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-13 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11722">Continuous Sampling EmonPi and EmonTx v3.4 examples</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 hours 24 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-14 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11407">Steps towards an EmonCMS 9.0 SD Card Image + Upgrade path</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 hours 27 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-15 views-row-odd views-row-last">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/4341">Sensus 620c Water Meter</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>7 hours 4 min</em> ago</span>  </div></li>
+      </ul></div>    </div>
+  
+  
+  
+  
+  
+  
+</div></div>
+ </div>
+  <div class="block block-views" id="block-views-avatar-block_1">
+    <h2 class="title">Community</h2>
+    <div class="content"><div class="view view-avatar view-id-avatar view-display-id-block_1 view-dom-id-2167360c67e4170de9ff463b8b11457b">
+    
+  
+  
+      <div class="view-content">
+      <table class="views-view-grid col-4">
+  <tbody>
+          <tr class="row-1 row-first">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/8066" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="firefox7518&#039;s picture" title="firefox7518&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/6366" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="nrgbod&#039;s picture" title="nrgbod&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/4638" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="borpin123&#039;s picture" title="borpin123&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/9029" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="scubammx&#039;s picture" title="scubammx&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-2">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/937" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Bramco&#039;s picture" title="Bramco&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/9060" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Heathy65&#039;s picture" title="Heathy65&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/8298" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-8298.jpg" alt="Jon&#039;s picture" title="Jon&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/4440" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-4440.jpg" alt="pb66&#039;s picture" title="pb66&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-3">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/238" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-238.jpg" alt="Paul Reed&#039;s picture" title="Paul Reed&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/9069" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="R0b3r7&#039;s picture" title="R0b3r7&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/450" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="stuart&#039;s picture" title="stuart&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/8733" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-8733.jpg" alt="CidiRome&#039;s picture" title="CidiRome&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-4">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/924" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Robert Wall&#039;s picture" title="Robert Wall&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/3016" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="dBC&#039;s picture" title="dBC&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/5027" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Eric_AMANN&#039;s picture" title="Eric_AMANN&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/2185" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="arjen&#039;s picture" title="arjen&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-5 row-last">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/7757" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="viper1bw&#039;s picture" title="viper1bw&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/5542" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-5542.jpg" alt="Gwil&#039;s picture" title="Gwil&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/3208" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="dominator99&#039;s picture" title="dominator99&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/7218" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="emjay&#039;s picture" title="emjay&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+      </tbody>
+</table>
+    </div>
+  
+  
+  
+      
+<div class="more-link">
+  <a href="/emon/community/details%20">
+    more  </a>
+</div>
+  
+  
+  
+</div></div>
+ </div>
+  <div class="block block-aggregator" id="block-aggregator-feed-1">
+    <h2 class="title">Latest Blog posts</h2>
+    <div class="content"><div class="item-list"><ul><li class="first"><a href="http://openenergymonitor.blogspot.com/2015/11/remote-control-of-lightwave-rf-plugs.html">Remote Control of LightWave RF plugs via MQTT using emonPi with OOK Tx</a>
+</li>
+<li><a href="http://openenergymonitor.blogspot.com/2015/11/uk-grid-carbon-intensity.html">UK Grid Carbon Intensity API</a>
+</li>
+<li><a href="http://openenergymonitor.blogspot.com/2015/11/node-red-emoncms-node.html">Node-RED Emoncms Node</a>
+</li>
+<li><a href="http://openenergymonitor.blogspot.com/2015/11/openenergymonitor-november-2015.html">OpenEnergyMonitor November 2015 - Overview Presentation</a>
+</li>
+<li class="last"><a href="http://openenergymonitor.blogspot.com/2015/11/interpreting-emoncms-dashboards.html">Interpreting Emoncms Dashboards</a>
+</li>
+</ul></div><div class="more-link"><a href="/emon/aggregator/sources/1" title="View this feed&#039;s recent news.">more</a></div></div>
+ </div>
+  <div class="block block-block" id="block-block-1">
+    <h2 class="title"></h2>
+    <div class="content"><p><a class="twitter-timeline" data-widget-id="485068137952317440" href="https://twitter.com/Openenergymon">Tweets by @Openenergymon</a> </p>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></p>
+</div>
+ </div>
+  <div class="block block-views" id="block-views-popular_topics-block_1">
+    <h2 class="title">Popular topics updated in the last month</h2>
+    <div class="content"><div class="view view-popular-topics view-id-popular_topics view-display-id-block_1 view-dom-id-ce32a9f01df11dff4bee22b3c610ac66">
+    
+  
+  
+      <div class="view-content">
+      <div class="item-list">    <ul>          <li class="views-row views-row-1 views-row-odd views-row-first">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11009">EmonCMS 9.2 | 2015.11.27 released </a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(341 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 week 2 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-2 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10055">First open energy monitor project (PART 2)</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(90 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>3 weeks 5 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-3 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/5943">MQTT and node-red for emonHub</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(86 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 week 4 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-4 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10163">OLD: Raspberry Pi 2 pre-built SD card image (emonSD-13-03-15.img) BETA</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(82 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 weeks 6 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-5 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11260">In development: Android emoncms app</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(79 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 day 11 hours</em> ago</span>  </span></li>
+          <li class="views-row views-row-6 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11574">Hook Triac or FET to EmonPi</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(73 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 days 10 hours</em> ago</span>  </span></li>
+          <li class="views-row views-row-7 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/5549">RFM12PI receiver goes hard down sometimes</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(70 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>5 hours 55 min</em> ago</span>  </span></li>
+          <li class="views-row views-row-8 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/2406"> EmonLibPro Released - Continuous sampling, Multi sensor, Interrupt based, implements a zero cross detector and PLL.</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(69 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>39 weeks 5 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-9 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/589">Software only solution for feeding weather data</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(65 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 week 6 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-10 views-row-even views-row-last">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11445">Dashboard menu on Emoncms.org disappeared</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(55 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>4 weeks 17 hours</em> ago</span>  </span></li>
+      </ul></div>    </div>
+  
+      <div class="item-list"><ul class="pager"><li class="pager-current first">1</li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=1" title="Go to page 2" class="active">2</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=2" title="Go to page 3" class="active">3</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=3" title="Go to page 4" class="active">4</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=4" title="Go to page 5" class="active">5</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=5" title="Go to page 6" class="active">6</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=6" title="Go to page 7" class="active">7</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=7" title="Go to page 8" class="active">8</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=8" title="Go to page 9" class="active">9</a></li>
+<li class="pager-ellipsis">…</li>
+<li class="pager-next"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=1" title="Go to next page" class="active">next ›</a></li>
+<li class="pager-last last"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor?page=21" title="Go to last page" class="active">last »</a></li>
+</ul></div>  
+  
+  
+  
+  
+</div></div>
+ </div>
+    </td>  </tr>
+</table>
+
+<div id="footer">
+  <p>Open-source tools for energy monitoring and analysis.&nbsp;This project uses the <a href="http://openenergymonitor.org/emon/node/4">GNU General Public Licence</a></p>
+    <div class="block block-node" id="block-node-0">
+    <h2 class="title">Syndicate</h2>
+    <div class="content"><a href="/emon/rss.xml" class="feed-icon"><img src="/emon/misc/feed.png" alt="Syndicate content" title="Syndicate" width="16" height="16" /></a></div>
+ </div>
+ 
+</div>
+
+
+</div>
+</body>
+
+</html>

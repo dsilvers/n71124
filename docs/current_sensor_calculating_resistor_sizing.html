@@ -1,0 +1,796 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>CT sensors - Interfacing with an Arduino | OpenEnergyMonitor</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<link rel="shortcut icon" href="/emon/sites/default/files/emon3_favicon.png" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" media="all" href="/emon/modules/aggregator/aggregator.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/node/node.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/system/defaults.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/system/system.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/system/system-menus.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/user/user.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/ckeditor/ckeditor.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/mollom/mollom.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/nice_menus/nice_menus.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/nice_menus/nice_menus_default.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/forum/forum.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/views/css/views.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/modules/tweetbutton/tweetbutton.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/modules/comment/comment.css?H" />
+<link type="text/css" rel="stylesheet" media="all" href="/emon/sites/all/themes/emon3/style.css?H" />
+<style type="text/css" media="all">@import "/emon/sites/all/themes/emon3/user_bar.css";</style>
+  <script type="text/javascript" src="/emon/misc/jquery.js?H"></script>
+<script type="text/javascript" src="/emon/misc/drupal.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/superfish/js/superfish.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/superfish/js/jquery.bgiframe.min.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/superfish/js/jquery.hoverIntent.minified.js?H"></script>
+<script type="text/javascript" src="/emon/sites/all/modules/nice_menus/nice_menus.js?H"></script>
+<script type="text/javascript" src="/emon/misc/tableheader.js?H"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/emon/", "nice_menus_options": { "delay": "800", "speed": "fast" } });
+//--><!]]>
+</script>
+  <script type="text/javascript"> </script>
+</head>
+
+<body>
+
+<div id="box">
+
+<table border="0" cellpadding="0" cellspacing="0" id="header">
+  <tr>
+    <td id="logo">
+       <h1 class='site-name'><a href="/emon/" title="Home">OpenEnergyMonitor</a></h1>    </td>
+    <td id="menu">
+      
+      <ul class="links" id="navlist"><li class="menu-254 first"><a href="http://openenergymonitor.org/emon/sustainable-energy" title="The OpenEnergyMonitor Vision">About</a></li>
+<li class="menu-198"><a href="/emon/opensustech" title="Building upon the work and ideas of many people">Open source</a></li>
+<li class="menu-146"><a href="/emon/people" title="People">People</a></li>
+<li class="menu-199"><a href="http://openenergymonitor.blogspot.com/" title="">Blog</a></li>
+<li class="menu-1051"><a href="http://openenergymonitor.org/emon/forum" title="">Forums </a></li>
+<li class="menu-833 last"><a href="http://github.com/openenergymonitor" title="Software repositories for OpenEnergyMonitor project">GitHub</a></li>
+</ul>      <form action="/emon/buildingblocks/ct-sensors-interface"  accept-charset="UTF-8" method="post" id="search-theme-form">
+<div><div id="search" class="container-inline">
+  <div class="form-item" id="edit-search-theme-form-1-wrapper">
+ <label for="edit-search-theme-form-1">Search this site: </label>
+ <input type="text" maxlength="128" name="search_theme_form" id="edit-search-theme-form-1" size="15" value="" title="Enter the terms you wish to search for." class="form-text" />
+</div>
+<input type="submit" name="op" id="edit-submit-1" value="Search"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-XyzY0sMo-N6CSun4VO6cR3DcuF1K-WCy6o31HqJrpWM" value="form-XyzY0sMo-N6CSun4VO6cR3DcuF1K-WCy6o31HqJrpWM"  />
+<input type="hidden" name="form_id" id="edit-search-theme-form" value="search_theme_form"  />
+</div>
+
+</div></form>
+      
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><div></div></td>
+</tr>
+</table>
+<!--<div style="background-color:#444444; border-top: 1px solid #888; height:32px;">-->
+  <div class="block block-nice_menus" id="block-nice_menus-1">
+    <h2 class="title"></h2>
+    <div class="content"><ul class="nice-menu nice-menu-down" id="nice-menu-1"><li class="menu-1041 menuparent menu-path-openenergymonitororg-emon-guide first  odd "><a href="http://openenergymonitor.org/emon/guide" title="">Get Started</a><ul><li class="menu-1795 menu-path-node-11570 first  odd "><a href="/emon/Overview" title="">System Overview</a></li>
+<li class="menu-1647 menu-path-node-4898 even "><a href="/emon/guide" title="OpenEnergyMonitor Guide">Setup Guide</a></li>
+<li class="menu-1764 menu-path-openenergymonitororg-emon-modules-emonpi odd "><a href="http://openenergymonitor.org/emon/modules/emonpi" title="Setup web-connected Raspberry Pi based energy monitor base-station using ready-to-go SD card ">Base Station Setup</a></li>
+<li class="menu-1796 menu-path-node-11206 even  last "><a href="/emon/faq" title="Frequently asked questions">FAQ</a></li>
+</ul>
+</li>
+<li class="menu-1042 menuparent menu-path-openenergymonitororg-emon-hardware even "><a href="http://openenergymonitor.org/emon/hardware" title="Hardware Modules">Hardware</a><ul><li class="menu-1762 menu-path-node-10548 first  odd "><a href="/emon/modules/emonpi" title="emonPi">emonPi / emonBase</a></li>
+<li class="menu-1047 menu-path-openenergymonitororg-emon-modules-emonTxV3 even "><a href="http://openenergymonitor.org/emon/modules/emonTxV3" title="Remote energy monitoring node">emonTx</a></li>
+<li class="menu-1601 menu-path-node-3223 odd "><a href="/emon/modules/emonTH" title="emonTH">emonTH</a></li>
+<li class="menu-1387 menu-path-openenergymonitororg-emon-emontxshield even "><a href="http://openenergymonitor.org/emon/emontxshield" title="Arduino compatible energy monitoring shield ">emonTx Shield </a></li>
+<li class="menu-1048 menu-path-openenergymonitororg-emon-emonglcd odd "><a href="http://openenergymonitor.org/emon/emonglcd" title="">emonGLCD</a></li>
+<li class="menu-1792 menu-path-wikiopenenergymonitororg- even  last "><a href="http://wiki.openenergymonitor.org/" title="Hardware documentation wiki ">Hardware Wiki</a></li>
+</ul>
+</li>
+<li class="menu-1590 menuparent menu-path-Http--emoncmsorg odd "><a href="Http://emoncms.org" title="open-source web-app for processing, logging and visualising energy, temperature and other environmental data">Emoncms</a><ul><li class="menu-1788 menu-path-node-11553 first  odd  last "><a href="/emon/node/11553" title="Installation Guides">Installation Guides</a></li>
+</ul>
+</li>
+<li class="menu-1043 menuparent menu-path-openenergymonitororg-emon-buildingblocks even "><a href="http://openenergymonitor.org/emon/buildingblocks" title="Technical resources">Resources</a><ul><li class="menu-1801 menu-path-openenergymonitororg-emon-buildingblocks first  odd "><a href="http://openenergymonitor.org/emon/buildingblocks" title="">Building Blocks</a></li>
+<li class="menu-1052 menu-path-openenergymonitororg-emon-forum even "><a href="http://openenergymonitor.org/emon/forum" title="">Forums </a></li>
+<li class="menu-1797 menu-path-https--githubcom-openenergymonitor- odd "><a href="https://github.com/openenergymonitor/" title="open-source software repositories &amp; hardware designs ">Software GitHub</a></li>
+<li class="menu-1798 menu-path-https--githubcom-openenergymonitor-hardware- even "><a href="https://github.com/openenergymonitor/hardware/" title="open-hardware design files">Hardware GitHub</a></li>
+<li class="menu-1393 menu-path-wikiopenenergymonitororg- odd "><a href="http://wiki.openenergymonitor.org/" title="Hardware technical documentation Wiki ">Hardware Wiki</a></li>
+<li class="menu-1767 menu-path-openenergymonitororg-emon-faq even  last "><a href="http://openenergymonitor.org/emon/faq" title="Answers to commonly asked questions">FAQ</a></li>
+</ul>
+</li>
+<li class="menu-1044 menu-path-openenergymonitororg-emon-labs odd "><a href="http://openenergymonitor.org/emon/labs" title="Development &amp; experimental ">Labs</a></li>
+<li class="menu-1793 menu-path-shopopenenergymonitorcom- even  last "><a href="http://shop.openenergymonitor.com/" title="OpenEnergyMonitor official online store">Online Store</a></li>
+</ul>
+</div>
+ </div>
+
+<table border="0" cellpadding="0" cellspacing="0" id="content">
+  <tr>
+        <td valign="top">
+            <div id="main">
+        <div class="breadcrumb"><a href="/emon/">Home</a></div>     
+        <div class="tabs"></div>
+                          <div class="node">
+
+    
+          <span class="submitted"></span>
+      <div class="taxonomy"></div>
+      <div class="content"><div class="tweetbutton"><a href="http://twitter.com/share" class="twitter-share-button"  data-count="horizontal" data-via="Openenergymon" data-related=":" data-text="" data-url="http://openenergymonitor.org/emon/buildingblocks/ct-sensors-interface" data-lang="en">Tweet</a></div><h3>CT sensors - Interfacing with an Arduino</h3>
+<p><img alt="" src="http://openenergymonitor.org/emon/sites/default/files/ctarduino.JPG" style="height:223px; width:700px" /></p>
+<p>To connect a CT sensor to an Arduino, the output signal from the CT sensor needs to be conditioned so it meets the input requirements of the Arduino analog inputs, i.e. a&nbsp;<strong>positive voltage between 0V and the ADC reference voltage.</strong></p>
+<p><strong>Note: </strong>This page give the example of an Arduino board working at 5 V and of the EmonTx working at 3.3 V. Make sure you use the right supply voltage and bias voltage in your calculations that correspond to your setup.</p>
+<p>This can be achieved with the following circuit which consists of two main parts:&nbsp;</p>
+<ol>
+<li>
+<p>The CT sensor and burden resistor</p>
+</li>
+<li>
+<p>The biasing voltage divider (<em>R1 &amp; R2</em>)</p>
+</li>
+</ol>
+<p><a href="http://openenergymonitor.org/emon/sites/default/files/Arduino AC current input A.png"><img alt="" src="http://openenergymonitor.org/emon/sites/default/files/Arduino AC current input A.png" style="height:439px; width:735px" /></a></p>
+<p>&nbsp;</p>
+<h3><strong><u>Calculating a suitable burden resistor size</u></strong></h3>
+<p>If the CT sensor is a &quot;current output&quot; type such as the <em>YHDC&nbsp;SCT-013-000</em>, the current signal needs to be converted to a voltage signal with a burden resistor. If it is a voltage output CT you can skip this step and leave out the burden resistor, as the burden resistor is built into the CT.</p>
+<p><strong>1) Choose the current range you want to measure</strong></p>
+<p>The YHDC&nbsp;SCT-013-000 CT has a current range of 0 to 100 A. For this example, let&#39;s choose 100 A as our maximum current.</p>
+<p><strong>2) Convert maximum RMS current to peak-current by multiplying by &radic;2.</strong></p>
+<pre>
+Primary peak-current = RMS current &times; &radic;2 = 100 A &times; 1.414 = 141.4A</pre><p><strong>3) Divide the peak-current by the number of turns in the CT to give the peak-current in the secondary coil.</strong></p>
+<p>The&nbsp;YHDC&nbsp;SCT-013-000 CT has 2000 turns, so the secondary peak current will be:</p>
+<pre>
+Secondary peak-current = Primary peak-current / no. of turns = 141.4 A / 2000 = 0.0707A</pre><p><strong>4) To maximise measurement resolution, the voltage across the burden resistor at peak-current should be equal to one-half of the Arduino analog reference voltage. (AREF / 2)</strong></p>
+<p>If you&#39;re using an Arduino running at 5V: AREF / 2 will be 2.5 Volts. So the ideal burden resistance will be:</p>
+<pre>
+Ideal burden resistance = (AREF/2) / Secondary peak-current = 2.5 V / 0.0707 A = 35.4 &Omega;
+</pre><p>35 &Omega; is not a common resistor value. The nearest values either side of 35&nbsp;&Omega; are 39 and 33 &Omega;. Always choose the&nbsp;smaller value,&nbsp;or the maximum load current will create a voltage higher than AREF.&nbsp;We recommend a 33 &Omega; &plusmn;1% burden. In some cases, using 2 resistors in series will be closer to the ideal burden value. The further from ideal the value is, the lower the accuracy will be.</p>
+<p>Here are the same calculations as above in a more compact form:</p>
+<pre>
+<strong>Burden Resistor (ohms) = (AREF * CT TURNS) / (2&radic;2 * max primary current)</strong></pre><p>&nbsp;</p>
+<p><strong>emonTx V2</strong></p>
+<p>If you&#39;re using a battery powered emonTx&nbsp;V2, AREF will start at 3.3 V and slowly decrease as the battery voltage drops to 2.7 V. The ideal burden resistance for the minimum voltage would therefore be:</p>
+<pre>
+Ideal burden resistance = (AREF/2) / Secondary peak-current = 1.35V / 0.0707A = <strong>19.1 &Omega;</strong></pre><p>19 &Omega; is not a common value. We have a choice of 18 or 22 &Omega;. We recommend using an 18 &Omega; &plusmn;1% burden.</p>
+<p><strong>emonTx V3</strong></p>
+<p>The emonTx V3 uses a 3.3V regulator, so it&#39;s V<sub>CC</sub> and therefore&nbsp;AREF, will always be 3.3V regardless of battery voltage. The standard emonTx V3 uses 22 &Omega; burden resistors for CT 1, 2 and 3, and a 120 &Omega; resistor for CT4, the high sensitivity channel. See the emonTx&nbsp;V3 technical wiki at: <a href="http://wiki.openenergymonitor.org/index.php?title=EmonTx_V3#Burden_Resistor_Calculations">http://wiki.openenergymonitor.org/index.php?title=EmonTx_V3#Burden_Resistor_Calculations</a></p>
+<p>&nbsp;</p>
+<p><strong><a href="http://tyler.anairo.com/?id=5.3.0 ">Tool for calculating burden resistor size, CT turns and max Irms</a>&nbsp;- </strong>thanks to Tyler Adkisson for building and sharing this.</p>
+<p>(Note: this tool does not take into account maximum CT power output. Saturation and distortion will occur if the maximum output is exceeded. Nor does it take into account component tolerances, so the burden resistor value should be decreased by a few (~5) percent allow some &quot;headroom.&quot; There is more info about component tolerances at: <a href="http://openenergymonitor.org/emon/buildingblocks/acac-component-tolerances" title="ACAC Component tolerances">ACAC Component tolerances.</a>)</p>
+<h3>2) Adding a DC Bias</h3>
+<p>If you were to connect one of the CT wires to ground and measure the voltage of the second wire, relative to ground, the voltage would vary from positive to negative with respect to ground. However, the Arduino analog inputs require a <em>positive</em> voltage. By connecting the CT lead we connected to ground, to a source at half the supply voltage instead, the CT output voltage will now swing above and below 2.5 V thus remaining positive.</p>
+<p>Resistors R1 &amp; R2 in the circuit diagram above are a voltage divider that provides the 2.5 V source (1.65 V for the emonTx). Capacitor C1 has a low <em>reactance</em> - a few hundred ohms - and provides a path for the alternating current to bypass the resistor.</p>
+<p><strong>Choosing a suitable value for resistors R1 &amp; R2:</strong></p>
+<p>Higher resistance lowers quiescent energy consumption.</p>
+<p>We use 10 k&Omega; resistors for mains powered monitors. The <a href="http://openenergymonitor.org/emon/emontx">emonTx</a> uses 470 k&Omega; resistors to keep the power consumption to a minimum, as it is intended to run on batteries for several months.</p>
+<p>&nbsp;</p>
+<h3><strong>Arduino sketch</strong></h3>
+<p>To use the above circuit to measure RMS current, with an assumed fixed RMS voltage (e.g. 240V) to indicate approximate apparent power, use this Arduino sketch:&nbsp;<a href="http://openenergymonitor.org/emon/buildingblocks/arduino-sketch-current-only">Arduino sketch - current only</a></p>
+<table id="attachments" class="sticky-enabled">
+ <thead><tr><th>Attachment</th><th>Size</th> </tr></thead>
+<tbody>
+ <tr class="odd"><td><a href="http://openenergymonitor.org/emon/sites/default/files/BurdenResistorCalculator_0.xls">BurdenResistorCalculator.xls</a></td><td>36 KB</td> </tr>
+</tbody>
+</table>
+</div>
+    
+    
+      </div>
+<div id="comments">
+  <a id="comment-3232"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="quarbe&#039;s picture" title="quarbe&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by quarbe (not verified) on Mon, 20/02/2012 - 18:05.</div>
+    <div class="content">
+     <p>Hi everybody!</p>
+<p>I need some help with CSLA2CD Honeywell hall efect. The question is that it&acute;s need a minimun of 6V DC to work, recomended 8V and the output is VCC/2, incrementing 0,033V for every Amp. So I have connected it to 8V, and the output is 4V without load...</p>
+<p>&nbsp;</p>
+<p>How can I connect to arduino?? Is it necesary to modify the library??&nbsp;</p>
+<p>Thanks in advace!</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-3058"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="greenfly&#039;s picture" title="greenfly&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by greenfly (not verified) on Wed, 08/02/2012 - 20:49.</div>
+    <div class="content">
+     <p>&nbsp;I'm experiencing some Problems with this circuit, meaning I'm not getting any values.</p>
+<p>I got the SCT-013-000 and I'm using 320 Ohm Burden Resistor to measure a Current of 10A.&nbsp;</p>
+<p>I already checked my circuit (build it 2 times, checked voltages) and now also the SCT. There I noticed, it has got an internal resistance of 100 Ohm. Could that be a problem?</p>
+<p>What more can I do?</p>
+<p>Sebi</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-2637"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Robert&#039;s picture" title="Robert&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by Robert (not verified) on Wed, 04/01/2012 - 14:55.</div>
+    <div class="content">
+     <p>&nbsp;I use two of the sct-013-000 on my system. 120 volts with a 3.3volts Arduino. I use a 47 ohms resistor on each. This gives me a 50 amps maximum range on the ct instead of the 100 amps max, but I use them for measuring internal energy on individual breakers (220 volts) &nbsp;and the max one is the clothes dryer at 40 amps. To measure up to 100 amps, you would need 25 ohms resistor or so. I used my alternate method (explained in another comment) to chose the burden resistor since nobody seems to really know the number of turns on this device</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-2231"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <a href="/emon/user/317" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-317.jpg" alt="Sergegsx&#039;s picture" title="Sergegsx&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by <a href="/emon/user/317" title="View user profile.">Sergegsx</a> on Fri, 21/10/2011 - 13:15.</div>
+    <div class="content">
+     <p>wrt this sensors</p>
+<p>&nbsp;</p>
+<p>which one is more convenient to use, not for the whole house monitoring&nbsp;(ive got a efergy there) but for the different sections of the house.</p>
+<p>That would be a max of 2000W to 3000W in each.</p>
+<p>&nbsp;</p>
+<p>If i read correctly both will measure up to 5amps (230V*5A=1150W??) so thats maximum per sensor?</p>
+<p>also, the 100 version would be better cause it outputs 0-5mA so more precise ??</p>
+<p>Please any help.</p>
+<p>Thanks</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>TA12L-200</p>
+<p><a href="http://www.ebay.com/itm/0-5A-Input-2-5mA-Output-AC-Current-Transformer-TA12-200-/300609568022?pt=LH_DefaultDomain_0&amp;hash=item45fdb9fd16#ht_2573wt_1298">www.ebay.com/itm/0-5A-Input-2-5mA-Output-AC-Current-Transformer-TA12-200-/300609568022</a></p>
+<table cellspacing="1" cellpadding="1" border="1">
+<tbody>
+<tr>
+<td>Product Name</td>
+<td>AC Current Transformer</td>
+</tr>
+<tr>
+<td>Model No.</td>
+<td>TA12-200</td>
+</tr>
+<tr>
+<td>Ratio</td>
+<td>2000<strong>:</strong>1</td>
+</tr>
+<tr>
+<td>Input Current</td>
+<td>0-5A</td>
+</tr>
+<tr>
+<td>Output Current</td>
+<td>0-2.5mA</td>
+</tr>
+<tr>
+<td>Sample Resistance</td>
+<td>800&Omega;</td>
+</tr>
+<tr>
+<td>Sampling Voltage</td>
+<td>2V</td>
+</tr>
+<tr>
+<td>Nonlinear Scale</td>
+<td>&lt;=0.2%</td>
+</tr>
+<tr>
+<td>Phase Drift</td>
+<td>&lt;=5'</td>
+</tr>
+<tr>
+<td>Working Frequency</td>
+<td>20Hz-20KHz</td>
+</tr>
+</tbody>
+</table>
+<p>TA12L-100</p>
+<p><a href="http://www.ebay.com/itm/TA12L-100-Epoxy-Resin-Embedding-Current-Transformer-Red-/350497986004?pt=BI_Circuit_Breakers_Transformers&amp;hash=item519b4ed5d4">www.ebay.com/itm/TA12L-100-Epoxy-Resin-Embedding-Current-Transformer-Red-/350497986004</a></p>
+<table cellspacing="1" cellpadding="1" border="1">
+<tbody>
+<tr>
+<td>Product Name</td>
+<td>Current Transformer</td>
+</tr>
+<tr>
+<td>Model No.</td>
+<td>TA12L-100</td>
+</tr>
+<tr>
+<td>Ratio</td>
+<td>1000<strong>:</strong>1</td>
+</tr>
+<tr>
+<td>Input Current</td>
+<td>0-5A</td>
+</tr>
+<tr>
+<td>Output Current</td>
+<td>0-5mA</td>
+</tr>
+<tr>
+<td>Sample Resistance</td>
+<td>200&Omega;</td>
+</tr>
+<tr>
+<td>Sampling Voltage</td>
+<td>1V</td>
+</tr>
+<tr>
+<td>Nonlinear Scale</td>
+<td>&lt;=0.3%</td>
+</tr>
+<tr>
+<td>Phase Drift</td>
+<td>&lt;=10'</td>
+</tr>
+<tr>
+<td>Working Frequency</td>
+<td>20Hz-20KHz</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<a id="comment-2070"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Guest&#039;s picture" title="Guest&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by <a href="http://www.stillwatereng.net" rel="nofollow">Guest</a> (not verified) on Tue, 06/09/2011 - 19:21.</div>
+    <div class="content">
+     <p>I think you have the example burden values reversed for the 3.3V and 5.0V implementations of the SCT-013-000.  If you use the recommended 56 ohms in a 3.3V system, (33 mA * 1.414) * 56 ohms = 2.61V.  Add the 1.65V offset value, and your peak voltage is 2.61 + 1.65 = 4.26V in a 3.3V system.  Or are you using a different ADC reference value?</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-2074"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <a href="/emon/user/10" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-10.jpg" alt="glyn.hudson&#039;s picture" title="glyn.hudson&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by <a href="/emon/user/10" title="View user profile.">glyn.hudson</a> on Wed, 07/09/2011 - 13:16.</div>
+    <div class="content">
+     <p>Hi, thanks for noticing this. It turns out that the number of turns on the SCT-0130-00 are different to what we initally though. The number of turns is acutally very similar (if not the same) as the efergy CT.&nbsp;The datasheet is not clear on this. I've removed the recomended burden resistor values while we do some more testing. We have been using 15ohm burden rersistors in the emonTx running at 3.3V.&nbsp;</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-2454"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="bellboy.tech&#039;s picture" title="bellboy.tech&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by bellboy.tech (not verified) on Mon, 12/12/2011 - 16:07.</div>
+    <div class="content">
+     <p>Any luck with testing the SCT-013-000?&nbsp; I'm still having accuracy problems with the two I have?</p>
+<p>&nbsp;</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-2575"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="fparaggio&#039;s picture" title="fparaggio&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by fparaggio (not verified) on Thu, 29/12/2011 - 17:03.</div>
+    <div class="content">
+     <p>I experienced accurancy problem me too. Any news and testing for&nbsp;SCT-013-000?</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+<div class="indented"><a id="comment-2638"></a>
+  <div class="comment comment-published" >
+    <div class="picture">
+  <img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Robert&#039;s picture" title="Robert&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></div>
+
+<h3 class="title" style="padding-bottom:5px">Re: CT sensors - Interfacing with an Arduino</h3>
+
+    <div class="submitted">Submitted by Robert (not verified) on Wed, 04/01/2012 - 14:58.</div>
+    <div class="content">
+     <p>&nbsp;They are quite precise. I use a 47 ohms burden resistor at 3.3volts. This means roughly 50 amps max over a 512 range on the Arduinos analog input pin, so about 10 ticks per amp, or 100 ma per tick. This is theorical. As the sct013-000 outputs 33mA max at 100 amps, spread over 512 steps on the analog pin, don't expect miracles. I do get a final tested resolution of about 50 watts over the entire range, which is not so bad. If I need more precision, I use the sct-013-030 without a burden resistor. On a 3.3 volts system, it's one volt output is precive enough.</p>
+         </div>
+    <div class="links">&raquo; </div>
+  </div>
+</div></div></div></div></div>
+      
+              </div>
+    </td>
+    <td id="sidebar-right">
+        <div class="block block-menu" id="block-menu-secondary-links">
+    <h2 class="title">Site Map</h2>
+    <div class="content"><ul class="menu"><li class="leaf first"><a href="/emon/Overview" title="Overview">Overview</a></li>
+<li class="collapsed"><a href="/emon/Hardware" title="Hardware modules">Hardware</a></li>
+<li class="expanded active-trail"><a href="/emon/buildingblocks" title="Technical building blocks">Resources</a><ul class="menu"><li class="collapsed first"><a href="/emon/buildingblocks/setting-up-the-arduino-environment" title="Setting up the Arduino Environment">Setting up the Arduino Environment</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/avrisp" title="AVR ISP Programmers">AVR ISP Programmers</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/attiny" title="Setting up Arduino IDE for ATtinys">Setting up Arduino IDE for ATtinys</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ac-power-introduction" title="An introduction to AC Power">An introduction to AC Power</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ac-power-arduino-maths" title="AC Power Theory - Arduino maths">AC Power Theory - Arduino maths</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ac-power-advanced-maths" title="AC Power Theory - Advanced maths">AC Power Theory - Advanced maths</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/3-phase-power" title="3-Phase Power">3-Phase Power</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/overload-protection-of-mains-electrical-circuits" title="Overload Protection of Mains Electrical Circuits">Overload Protection of Mains Electrical Circuits</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/appliance-inference" title="Appliance Inference">Appliance Inference</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/measuring-voltage-with-an-acac-power-adapter" title="Measuring AC Voltage with an AC to AC power adapter">Measuring AC Voltage with an AC to AC power adapter</a></li>
+<li class="expanded active-trail"><a href="/emon/buildingblocks/ct-sensors-introduction" title="CT sensors - Introduction">CT sensors - Introduction</a><ul class="menu"><li class="leaf first"><a href="/emon/buildingblocks/arduino-sketch-current-only" title="Arduino sketch - current only">Arduino sketch - current only</a></li>
+<li class="leaf active-trail"><a href="/emon/buildingblocks/ct-sensors-interface" title="CT sensors - Interfacing with an Arduino" class="active">CT sensors - Interfacing with an Arduino</a></li>
+<li class="leaf"><a href="/emon/Current_Transformer_Installation" title="Current Transformer Installation">CT Installation</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/how-to-build-an-arduino-energy-monitor-measuring-current-only" title="How to build an arduino energy monitor - measuring current only">How to build an arduino energy monitor - measuring current only</a></li>
+<li class="leaf last"><a href="/emon/buildingblocks/report-yhdc-sct-013-000-current-transformer" title="Report: YHDC SCT-013-000 Current Transformer">Report: YHDC SCT-013-000 Current Transformer</a></li>
+</ul></li>
+<li class="leaf"><a href="/emon/buildingblocks/digital-filters-for-offset-removal" title="Digital filters for offset removal">Digital filters for offset removal</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/dc-shunt" title="DC shunt">DC shunt</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/DS18B20-temperature-sensing" title="DS18B20 temperature sensing">DS18B20 temperature sensing</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/rtd-temperature-sensing" title="RTD temperature sensing">RTD temperature sensing</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/introduction-to-pulse-counting" title="Introduction to pulse counting">Introduction to pulse counting</a></li>
+<li class="collapsed"><a href="/emon/buildingblocks/12-input-pulse-counting" title="12 input pulse counting">12 input pulse counting</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/ct-and-ac-power-adaptor-installation-and-calibration-theory" title="CT and AC power adaptor installation and calibration theory">CT and AC power adaptor installation and calibration theory</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/calibration" title="Calibration">Calibration Procedure</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/explanation-of-the-phase-correction-algorithm" title="Explanation of the phase correction algorithm">Explanation of the phase correction algorithm</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/emontx-error-sources" title="Sources of error in the emonTx voltage and current inputs.">Sources of error in the emonTx voltage and current inputs.</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/measurement-implications-of-adc-resolution-at-low-current-values" title="Measurement implications of ADC resolution at low current values">Measurement implications of ADC resolution at low current values</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/how-good-is-your-multimeter" title="How good is your multimeter?">How good is your multimeter?</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/meters" title="Energy Meters">Energy Meters</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/EmonTx-in-North-America" title="EmonTx - Use in North America">EmonTx - Use in North America</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/which-radio-module" title="RFM Radio Modules - Identifying different types">RFM Radio Modules - Identifying different types</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/rfm12b-wireless" title="HopeRF RFM12 wireless link">RFM12B - Part 1 - Hardware Overview</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/rfm12b2" title="RFM12B - Part 2 - Sending Data Between Modules">RFM12B - Part 2 - Sending Data Between Modules</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/master-slave-arduino-networking" title="Master-Slave Arduino networking">Master-Slave Arduino networking</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/wifi" title="Raspberry Pi WIFI">Raspberry Pi WIFI</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/simple-rf-link" title="Simple RF Link">Simple RF Link</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/xbee-link" title="How to add an Xbee Link">xbee-link</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/interfacing-with-sma-sunnyboy-pv-inverters-bluetooth" title="Interfacing with SMA SunnyBoy PV Inverters (Bluetooth)">Interfacing with SMA SunnyBoy PV Inverters (Bluetooth)</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/7-segment-display" title="7 segment display">7 segment display</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/mains-ac-relay-module" title="Mains AC Relay Module">Mains AC Relay Module</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/nokia-3310-lcd" title="Nokia 3310 LCD">Nokia 3310 LCD</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/sd-card-logging" title="SD Card Logging with Nuelectronics Real-time Datalog &amp; IO Shield">SD Card Logging with Nuelectronics Real-time Datalog &amp; IO Shield</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/sma-webbox-data-extractor" title="SMA webBox data extractor">SMA webBox data extractor</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/usb-data-logger" title="USB Data Logger">USB Data Logger</a></li>
+<li class="leaf"><a href="/emon/buildingblocks/graphing-in-kst" title="Graphing in KST">Graphing in KST</a></li>
+<li class="collapsed last"><a href="/emon/buildingblocks/java-programs" title="Java Programs">Java Programs</a></li>
+</ul></li>
+<li class="collapsed"><a href="/emon/community%20" title="Community">Community</a></li>
+<li class="leaf"><a href="/emon/node/11355" title="Please read before posting">Read this before posting</a></li>
+<li class="collapsed"><a href="/emon/archive" title="Archive and Unsorted">Archive and Unsorted</a></li>
+<li class="leaf"><a href="/emon/faq" title="FAQ - Common issues">FAQs</a></li>
+<li class="leaf"><a href="/emon/node/11357" title="Adding a picture to your post">Adding a picture to a post</a></li>
+<li class="leaf last"><a href="/emon/node/11541" title="Emoncms Installation Guides">Emoncms Installation Guides</a></li>
+</ul></div>
+ </div>
+  <div class="block block-user" id="block-user-0">
+    <h2 class="title">User login</h2>
+    <div class="content"><form action="/emon/buildingblocks/ct-sensors-interface?destination=node%2F156"  accept-charset="UTF-8" method="post" id="user-login-form">
+<div><div class="form-item" id="edit-name-wrapper">
+ <label for="edit-name">Username: <span class="form-required" title="This field is required.">*</span></label>
+ <input type="text" maxlength="60" name="name" id="edit-name" size="15" value="" class="form-text required" />
+</div>
+<div class="form-item" id="edit-pass-wrapper">
+ <label for="edit-pass">Password: <span class="form-required" title="This field is required.">*</span></label>
+ <input type="password" name="pass" id="edit-pass"  maxlength="60"  size="15"  class="form-text required" />
+</div>
+<input type="submit" name="op" id="edit-submit" value="Log in"  class="form-submit" />
+<div class="item-list"><ul><li class="first"><a href="/emon/user/register" title="Create a new user account.">Create new account</a></li>
+<li class="last"><a href="/emon/user/password" title="Request new password via e-mail.">Request new password</a></li>
+</ul></div><input type="hidden" name="form_build_id" id="form-d6qLfULjd6a_dnhbbAyfLtnxlUFhCb9vdZ4ewxFqO7M" value="form-d6qLfULjd6a_dnhbbAyfLtnxlUFhCb9vdZ4ewxFqO7M"  />
+<input type="hidden" name="form_id" id="edit-user-login-block" value="user_login_block"  />
+
+</div></form>
+</div>
+ </div>
+  <div class="block block-views" id="block-views-Forums-block_1">
+    <h2 class="title">Active forum topics</h2>
+    <div class="content"><div class="view view-Forums view-id-Forums view-display-id-block_1 view-dom-id-41c8211e7c95d9613cada570fb288131">
+    
+  
+  
+      <div class="view-content">
+      <div class="item-list">    <ul>          <li class="views-row views-row-1 views-row-odd views-row-first">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11736">4x Multiplexed RTD Temperature sensor module</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>9 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-2 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11735">Confusion over the different hardware modules</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>7 min 43 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-3 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11734">Cannot get Wh Accumulator to work</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>15 min 48 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-4 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11733">problems with My Electric</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>22 min 47 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-5 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11732">emoncms.org rawdata graphs stopped.</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>52 min 20 sec</em> ago</span>  </div></li>
+          <li class="views-row views-row-6 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11720">EmonCMS 9.2 migration data corruption</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 hour 36 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-7 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11731">EmonPi aditional CT sensor</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 hour 36 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-8 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11727">emonTH with DHT22 doesn&#039;t transmit temperature and humidity values every 60 sec.</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>2 hours 6 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-9 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10919">Multi Stacked Barchart</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>3 hours 23 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-10 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11724">Dashboard with Gauge not displaying with Android</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>4 hours 15 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-11 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11729">MQ-2 smoke sensors</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>5 hours 27 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-12 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/5549">RFM12PI receiver goes hard down sometimes</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>5 hours 59 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-13 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10235">Getting places with gas meters, reed switches and ESP2866/NodeMCU/Lua</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 hours 9 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-14 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11722">Continuous Sampling EmonPi and EmonTx v3.4 examples</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 hours 28 min</em> ago</span>  </div></li>
+          <li class="views-row views-row-15 views-row-odd views-row-last">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11407">Steps towards an EmonCMS 9.0 SD Card Image + Upgrade path</a></span>  </div>  
+  <div class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 hours 31 min</em> ago</span>  </div></li>
+      </ul></div>    </div>
+  
+  
+  
+  
+  
+  
+</div></div>
+ </div>
+  <div class="block block-views" id="block-views-avatar-block_1">
+    <h2 class="title">Community</h2>
+    <div class="content"><div class="view view-avatar view-id-avatar view-display-id-block_1 view-dom-id-a0f34cd9fb7cddaf26a3c4a2aaf6ce26">
+    
+  
+  
+      <div class="view-content">
+      <table class="views-view-grid col-4">
+  <tbody>
+          <tr class="row-1 row-first">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/8066" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="firefox7518&#039;s picture" title="firefox7518&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/6366" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="nrgbod&#039;s picture" title="nrgbod&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/4638" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="borpin123&#039;s picture" title="borpin123&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/9029" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="scubammx&#039;s picture" title="scubammx&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-2">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/937" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Bramco&#039;s picture" title="Bramco&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/9060" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Heathy65&#039;s picture" title="Heathy65&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/8298" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-8298.jpg" alt="Jon&#039;s picture" title="Jon&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/4440" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-4440.jpg" alt="pb66&#039;s picture" title="pb66&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-3">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/238" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-238.jpg" alt="Paul Reed&#039;s picture" title="Paul Reed&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/9069" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="R0b3r7&#039;s picture" title="R0b3r7&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/450" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="stuart&#039;s picture" title="stuart&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/8733" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-8733.jpg" alt="CidiRome&#039;s picture" title="CidiRome&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-4">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/924" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Robert Wall&#039;s picture" title="Robert Wall&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/3016" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="dBC&#039;s picture" title="dBC&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/5027" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="Eric_AMANN&#039;s picture" title="Eric_AMANN&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/2185" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="arjen&#039;s picture" title="arjen&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+          <tr class="row-5 row-last">
+                  <td class="col-1 col-first">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/7757" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="viper1bw&#039;s picture" title="viper1bw&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-2">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/5542" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/pictures/picture-5542.jpg" alt="Gwil&#039;s picture" title="Gwil&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-3">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/3208" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="dominator99&#039;s picture" title="dominator99&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+                  <td class="col-4 col-last">
+              
+  <div class="views-field views-field-picture">        <div class="field-content"><div class="picture">
+  <a href="/emon/user/7218" title="View user profile."><img src="http://openenergymonitor.org/emon/sites/default/files/imagecache/avatar/default_0.png" alt="emjay&#039;s picture" title="emjay&#039;s picture" width="50" height="50" class="imagecache imagecache-avatar"/></a></div>
+</div>  </div>          </td>
+              </tr>
+      </tbody>
+</table>
+    </div>
+  
+  
+  
+      
+<div class="more-link">
+  <a href="/emon/community/details%20">
+    more  </a>
+</div>
+  
+  
+  
+</div></div>
+ </div>
+  <div class="block block-aggregator" id="block-aggregator-feed-1">
+    <h2 class="title">Latest Blog posts</h2>
+    <div class="content"><div class="item-list"><ul><li class="first"><a href="http://openenergymonitor.blogspot.com/2015/11/remote-control-of-lightwave-rf-plugs.html">Remote Control of LightWave RF plugs via MQTT using emonPi with OOK Tx</a>
+</li>
+<li><a href="http://openenergymonitor.blogspot.com/2015/11/uk-grid-carbon-intensity.html">UK Grid Carbon Intensity API</a>
+</li>
+<li><a href="http://openenergymonitor.blogspot.com/2015/11/node-red-emoncms-node.html">Node-RED Emoncms Node</a>
+</li>
+<li><a href="http://openenergymonitor.blogspot.com/2015/11/openenergymonitor-november-2015.html">OpenEnergyMonitor November 2015 - Overview Presentation</a>
+</li>
+<li class="last"><a href="http://openenergymonitor.blogspot.com/2015/11/interpreting-emoncms-dashboards.html">Interpreting Emoncms Dashboards</a>
+</li>
+</ul></div><div class="more-link"><a href="/emon/aggregator/sources/1" title="View this feed&#039;s recent news.">more</a></div></div>
+ </div>
+  <div class="block block-block" id="block-block-1">
+    <h2 class="title"></h2>
+    <div class="content"><p><a class="twitter-timeline" data-widget-id="485068137952317440" href="https://twitter.com/Openenergymon">Tweets by @Openenergymon</a> </p>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></p>
+</div>
+ </div>
+  <div class="block block-views" id="block-views-popular_topics-block_1">
+    <h2 class="title">Popular topics updated in the last month</h2>
+    <div class="content"><div class="view view-popular-topics view-id-popular_topics view-display-id-block_1 view-dom-id-ad267d7cfdc953abb2f8ac605f7dad98">
+    
+  
+  
+      <div class="view-content">
+      <div class="item-list">    <ul>          <li class="views-row views-row-1 views-row-odd views-row-first">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11009">EmonCMS 9.2 | 2015.11.27 released </a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(341 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 week 2 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-2 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10055">First open energy monitor project (PART 2)</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(90 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>3 weeks 5 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-3 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/5943">MQTT and node-red for emonHub</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(86 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 week 4 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-4 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/10163">OLD: Raspberry Pi 2 pre-built SD card image (emonSD-13-03-15.img) BETA</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(82 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 weeks 6 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-5 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11260">In development: Android emoncms app</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(79 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 day 11 hours</em> ago</span>  </span></li>
+          <li class="views-row views-row-6 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11574">Hook Triac or FET to EmonPi</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(73 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>6 days 10 hours</em> ago</span>  </span></li>
+          <li class="views-row views-row-7 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/5549">RFM12PI receiver goes hard down sometimes</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(70 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>5 hours 59 min</em> ago</span>  </span></li>
+          <li class="views-row views-row-8 views-row-even">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/2406"> EmonLibPro Released - Continuous sampling, Multi sensor, Interrupt based, implements a zero cross detector and PLL.</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(69 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>39 weeks 5 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-9 views-row-odd">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/589">Software only solution for feeding weather data</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(65 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>1 week 6 days</em> ago</span>  </span></li>
+          <li class="views-row views-row-10 views-row-even views-row-last">  
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/emon/node/11445">Dashboard menu on Emoncms.org disappeared</a></span>  </div>  
+  <span class="views-field views-field-comment-count">        <span class="field-content">(55 comments)</span>  </span>  
+  <span class="views-field views-field-last-comment-timestamp">        <span class="field-content"><em>4 weeks 17 hours</em> ago</span>  </span></li>
+      </ul></div>    </div>
+  
+      <div class="item-list"><ul class="pager"><li class="pager-current first">1</li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=1" title="Go to page 2" class="active">2</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=2" title="Go to page 3" class="active">3</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=3" title="Go to page 4" class="active">4</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=4" title="Go to page 5" class="active">5</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=5" title="Go to page 6" class="active">6</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=6" title="Go to page 7" class="active">7</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=7" title="Go to page 8" class="active">8</a></li>
+<li class="pager-item"><a href="/emon/buildingblocks/ct-sensors-interface?page=8" title="Go to page 9" class="active">9</a></li>
+<li class="pager-ellipsis">…</li>
+<li class="pager-next"><a href="/emon/buildingblocks/ct-sensors-interface?page=1" title="Go to next page" class="active">next ›</a></li>
+<li class="pager-last last"><a href="/emon/buildingblocks/ct-sensors-interface?page=21" title="Go to last page" class="active">last »</a></li>
+</ul></div>  
+  
+  
+  
+  
+</div></div>
+ </div>
+    </td>  </tr>
+</table>
+
+<div id="footer">
+  <p>Open-source tools for energy monitoring and analysis.&nbsp;This project uses the <a href="http://openenergymonitor.org/emon/node/4">GNU General Public Licence</a></p>
+    <div class="block block-node" id="block-node-0">
+    <h2 class="title">Syndicate</h2>
+    <div class="content"><a href="/emon/rss.xml" class="feed-icon"><img src="/emon/misc/feed.png" alt="Syndicate content" title="Syndicate" width="16" height="16" /></a></div>
+ </div>
+ 
+</div>
+
+
+</div>
+</body>
+
+</html>
