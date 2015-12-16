@@ -104,12 +104,12 @@ class FrontPageView(View):
             sensor_data = SensorData.objects.filter(sensor=cowling, date__gt=temps_since).order_by("-date")[0:99]
             for data in sensor_data:
                 cowling_dates.append(data.date.strftime("%Y-%m-%d %H:%M:%S"))
-                cowling_data.append(float(data.value))
+                cowling_data.append(float(data.value) * 1.8 + 32.0)
         if ambient:
             sensor_data = SensorData.objects.filter(sensor=ambient, date__gt=temps_since).order_by("-date")[0:99]
             for data in sensor_data:
                 ambient_dates.append(data.date.strftime("%Y-%m-%d %H:%M:%S"))
-                ambient_data.append(float(data.value))
+                ambient_data.append(float(data.value) * 1.8 + 32.0)
 
         heater_status = PowerSwitch.objects.filter(serial="heater").first()
         if heater_status and heater_status.status:
