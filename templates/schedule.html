@@ -16,9 +16,33 @@ $(document).ready(function() {
 });
 </script>
 
+
+        <div class="container">
+          <div class="uk-grid">
+            <div class="uk-width-medium-1-1">
+                <div class="uk-panel uk-panel-box uk-panel-space uk-text-center">
+<h2>Schedule Heater</h2>
+
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Schedule Heater" />
 </form>
+
+                </div>
+            </div>
+
+            <div class="uk-width-medium-1-1">
+                <div class="uk-panel uk-panel-box uk-panel-space uk-text-center">
+<h2>Heater Calendar</h2>
+
+{% for s in schedule %}
+<p>{{ s }} ( delete )</p>
+{% endfor %}
+
+                </div>
+            </div>
+          </div>
+        </div>
+
 
 {% endblock %}

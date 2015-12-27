@@ -10,3 +10,5 @@ parts
 src/*.egg-info
 .vagrant
 *.sqlite3
+
+n71124/settings_local.py

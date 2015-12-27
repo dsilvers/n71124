@@ -149,6 +149,11 @@ class ScheduleView(FormView):
         }
         return initial
 
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.get_initial())
+        schedules = PowerSchedule.objects.all()
+        return render(request, self.template_name, {'form': form, 'schedule': schedules })
+
     def form_valid(self, form):
         # yeah, someday we might have more than one?
         switch = PowerSwitch.objects.all().first()
