@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import View
+from django.views.generic.edit import FormView
 from django.http import HttpResponse
-from hangar.forms import SensorForm, SwitchStatusForm
-from hangar.models import Sensor, SensorData, PowerSwitch
+from hangar.forms import SensorForm, SwitchStatusForm, ScheduleForm
+from hangar.models import Sensor, SensorData, PowerSwitch, PowerSchedule
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -129,3 +130,36 @@ class FrontPageView(View):
             "heater_amps": heater_amps.last_value,
             "heater_status": status,
         })
+
+
+class ScheduleView(FormView):
+    template_name = 'schedule.html'
+    form_class = ScheduleForm
+    success_url = '/schedule/'
+
+    def get_initial(self):
+        now = datetime.utcnow()
+        discard = timedelta(minutes=now.minute % 15, seconds=now.second, microseconds=now.microsecond)
+        now -= discard
+
+        initial = {
+            'departure': now,
+            'heater_on': now - timedelta(hours=8),
+            'heater_off': now + timedelta(hours=2),
+        }
+        return initial
+
+    def form_valid(self, form):
+        # yeah, someday we might have more than one?
+        switch = PowerSwitch.objects.all().first()
+        PowerSchedule(
+            switch = switch,
+            start = form.cleaned_data['heater_on'],
+            end = form.cleaned_data['heater_off'],
+            departure = form.cleaned_data['departure'],
+            comment = form.cleaned_data['comment'],
+        ).save()
+
+        return super(ScheduleView, self).form_valid(form)
+
+

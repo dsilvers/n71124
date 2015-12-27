@@ -6,131 +6,9 @@
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.23.0/js/uikit.min.js"></script>
         <link rel="stylesheet" href="/static/style.css" />
+        <link rel="stylesheet" href="/static/n71124.css" />
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-        <style type="text/css">
-body {
-    background-image: url(/static/bg.jpg);
-    height: 100%;
-    background-position: 50% 50%; 
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-html {
-    height: 100%;
-}
-.uk-navbar {
-       border-bottom: 2px solid #4A824A;
-}
-.uk-panel {
-    margin: 0 1.2rem 0 1.2rem;
-    box-shadow: 4px 4px 14px -2px rgba(0,0,0,0.75);
-}
-.uk-panel-box {
-    border: 1px solid #4A824A;
-    box-shadow: 4px 4px 14px -2px rgba(0,0,0,0.75);
-}
-.tester{
-    padding: 0;
-    min-height: 150px;
-}
-.tester span {
-    padding: 10px 0 0 10px;
-}
-.box-text {
-    position:absolute;
-    z-index:99;
-    font-size:2rem;
-    padding:8px;
-    font-weight: bold;
-}
-div.no-margin {
-    padding: 0;
-    max-height: 200px;
-}
-.floater {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    top: 25px;
-    z-index: 99;
-
-}
-.floater p {
-    font-weight: bold;
-}
-        </style>
-        <script type="text/javascript">
-    $(document).ready(function() {
-
-    TESTER = document.getElementById('chart');
-
-    var ambient = [
-        {
-            x: {{ ambient_dates|safe }},
-            y: {{ ambient_data|safe }},
-            mode: 'lines+markers',
-            type: 'scatter',
-            name: "Ambient",
-            marker: {
-                size: 8,
-                color: 'blue'
-            },
-            opacity: 0.4
-        }
-    ];
-
-    var cowling = [
-        {
-            x: {{ cowling_dates|safe }},
-            y: {{ cowling_data|safe }},
-            mode: 'lines+markers',
-            type: 'scatter',
-            name: "Cowl",
-            marker: {
-                size: 8,
-                color: 'red'
-            },
-            opacity: 0.4
-        }
-    ];
-
-    var layout = {
-        showlegend: false,
-        xaxis: {
-            autorange: true,
-            showgrid: false,
-            zeroline: false,
-            showline: false,
-            autotick: true,
-            ticks: '',
-            showticklabels: false
-        },
-        yaxis: {
-            autorange: true,
-            showgrid: false,
-            zeroline: false,
-            showline: false,
-            autotick: true,
-            ticks: '',
-            showticklabels: false
-        },
-        margin: {
-            l: 0,
-            r: 0,
-            t: 0,
-            b: 0
-        },
-        height: 200,
-    };
-
-    Plotly.newPlot('chart', ambient, layout);
-    Plotly.addTraces('chart', cowling)
-
-});
-    </script>
+        <script type="text/javascript" src="/static/dateformat.js"></script>
     </head>
     <body>
         <nav class="uk-navbar uk-margin-bottom">
@@ -139,10 +17,21 @@ div.no-margin {
             </ul>
             <div class="uk-navbar-flip">
                 <ul class="uk-navbar-nav">
-                    <li><a href="">login</a></li>
+                    <li><a href="/schedule">Manage</a></li>
                 </ul>
             </div>
         </nav>
+        
+        {% block content %}
+        
+        <script type="text/javascript">
+        ambient_dates = {{ ambient_dates|safe }};
+        ambient_data = {{ ambient_data|safe }};
+        cowling_dates = {{ cowling_dates|safe }};
+        cowling_data = {{ cowling_data|safe }};
+        </script>
+        <script src="/static/chart.js"></script>
+
         <div class="container">
           <div class="uk-grid">
             <div class="uk-width-medium-1-1">
@@ -154,6 +43,8 @@ div.no-margin {
                         {% else %}
                         <button class="uk-button uk-button-large uk-button-danger uk-align-center" type="button">Heater OFF</button>
                         {% endif %}
+                        <p>Cowling: {{ cowling }}&deg;F</p>
+                        <p>Ambient: {{ ambient }}&deg;F</p>
                         <p>{{ heater_watts }} W,  {{ heater_amps }} A</p>
                     </div>
                     <div id="chart"></div>
@@ -161,5 +52,6 @@ div.no-margin {
             </div>
           </div>
         </div>
+        {% endblock %}
     </body>
 </html>

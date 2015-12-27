@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript">
+
+$(document).ready(function() { 
+    $('#id_departure').change(function() {
+        d = new Date($(this).val());
+
+        on = new Date(d.getTime() - 8*60*60*1000);
+        off =  new Date(d.getTime() + 2*60*60*1000);
+        $('#id_heater_on').val(dateFormat(on, "isoDateTime"));
+        $('#id_heater_off').val(dateFormat(off, "isoDateTime"));
+    });
+
+});
+</script>
+
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Schedule Heater" />
+</form>
+
+{% endblock %}

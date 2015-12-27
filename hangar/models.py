@@ -36,8 +36,9 @@ class PowerSchedule(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     departure = models.DateTimeField(blank=True, null=True)
+    comment = models.CharField(max_length=255, blank=True)
 
-    def __unicode(self):
+    def __unicode__(self):
         return "%s - %s to %s" % (self.switch, self.start, self.end)
 
 class PowerManualControl(models.Model):
