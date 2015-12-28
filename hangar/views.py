@@ -31,7 +31,7 @@ class SensorReportingView(View):
             )
             data.save()
 
-            sensor.last_update = datetime.utcnow()
+            sensor.last_update = datetime.now()
             sensor.last_value = form.cleaned_data['value']
             sensor.save()
 
@@ -138,7 +138,7 @@ class ScheduleView(FormView):
     success_url = '/schedule/'
 
     def get_initial(self):
-        now = datetime.utcnow()
+        now = datetime.now() + timedelta(hours=8)
         discard = timedelta(minutes=now.minute % 15, seconds=now.second, microseconds=now.microsecond)
         now -= discard
 
