@@ -10,5 +10,5 @@ parts
 src/*.egg-info
 .vagrant
 *.sqlite3
-
+static_collect
 n71124/settings_local.py

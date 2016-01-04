@@ -8,7 +8,7 @@ $(document).ready(function() {
             type: 'scatter',
             name: "Ambient",
             marker: {
-                size: 8,
+                size: 2,
                 color: 'blue'
             },
             opacity: 0.4
@@ -23,7 +23,7 @@ $(document).ready(function() {
             type: 'scatter',
             name: "Cowl",
             marker: {
-                size: 8,
+                size: 2,
                 color: 'red'
             },
             opacity: 0.4
